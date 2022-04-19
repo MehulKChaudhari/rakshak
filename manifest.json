@@ -15,5 +15,14 @@
     "16": "favicon.ico",
     "48": "logo192.png",
     "128": "logo512.png"
-  }
+  },
+  "background": {
+    "scripts": ["src/background.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["src/contentScript.js"]
+    }
+  ]
 }
