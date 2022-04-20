@@ -4,25 +4,26 @@
   "description":"Saving you from the mean behind the screen",
   "version": "1.0",
   "manifest_version": 3,
-  "permissions": [
-    "activeTab"
-  ],
+  "permissions": ["identity", "activeTab", "storage"],
+	"host_permissions": [
+		"*://*/*"
+	  ],
   "action": {
       "default_popup": "popup.html",
       "default_title": "Open the popup"
   },
   "icons":{
     "16": "favicon.ico",
-    "48": "logo192.png",
-    "128": "logo512.png"
+    "48": "logo.png",
+    "128": "logo.png"
   },
   "background": {
-    "scripts": ["src/background.js"]
+    "service_worker": "background.js"
   },
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
-      "js": ["src/contentScript.js"]
+      "js": ["contentScript.js"]
     }
   ]
 }
