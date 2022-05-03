@@ -121,4 +121,3 @@ class LoggedInOpsViewSet(ViewSet):
 
     def update_user_info(self, request: Request) -> Response:
         pass
-
