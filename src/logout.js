@@ -1,5 +1,7 @@
 const protectButton = document.getElementById("Logout");
 
 protectButton.addEventListener("click", () => {
-    chrome.tabs.create({ active: true, url: "/pages/login.html" });
+  chrome.runtime.sendMessage({ message: "logout" }, function (response) {
+    if (response === "success") window.location.replace("./popup.html");
   });
+});

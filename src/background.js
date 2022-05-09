@@ -17,7 +17,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     chrome.tabs.update({ url: "/popup.html" });
     return true;
   } else if (request.message === "userStatus") {
-    is_user_signed_in()
+    isUserSignedIn()
       .then((res) => {
         sendResponse({
           message: "success",
