@@ -39,6 +39,13 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+
+    PROTECTION_LEVEL_CHOICES = (
+        ("KPS", "Keep me safe"),
+        ("MFN", "My friends are nice"),
+        ("ILE", "I live on the edge"),
+    )
+
     email = models.EmailField(max_length=254, unique=True)
     name = models.CharField(max_length=254, null=True, blank=True)
     is_staff = models.BooleanField(default=False)
@@ -46,6 +53,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     last_login = models.DateTimeField(null=True, blank=True)
     date_joined = models.DateTimeField(auto_now_add=True)
+
+    protection_level = models.CharField(choices=PROTECTION_LEVEL_CHOICES, blank=True, null=True)
 
     USERNAME_FIELD = "email"
     EMAIL_FIELD = "email"

@@ -10,6 +10,7 @@ from django.core.validators import validate_email
 from django.forms import ValidationError
 from django.db import IntegrityError
 from django.contrib.auth import authenticate
+from django.core.exceptions import ObjectDoesNotExist
 
 from .models import User
 from .serializers import UserSerializer
@@ -98,6 +99,15 @@ class AuthViewSet(ViewSet):
 
         return Response(data={"message": message}, status=status_code)
 
+    def delete(self, request: Request) -> Response:
+        email = request.data.get("email")
+        try:
+            user = User.objects.get(email=email)
+            user.delete()
+        except ObjectDoesNotExist as e:
+            print(e)
+        return Response({}, status=status.HTTP_200_OK)
+
     def forgot_password(self, request: Request) -> Response:
         pass
 
@@ -119,5 +129,14 @@ class LoggedInOpsViewSet(ViewSet):
         message, status_code = serialized_user.data, status.HTTP_200_OK
         return Response({"message": message}, status=status_code)
 
+    def update_protection(self, request: Request) -> Response:
+        data = request.data
+        user = request.user
+        protection_level = data.get("protection_level")
+        user.protection_level = protection_level
+        user.save()
+        message = "Updated successfully"
+        return Response({"message": message}, status=status.HTTP_200_OK)
+        
     def update_user_info(self, request: Request) -> Response:
         pass
