@@ -1,7 +1,10 @@
 module.exports = {
-  content: ["./src/**/*.{html,js}", "./popup.html"],
+  content: ["./src/**/*.{html,js}"],
   theme: {
     extend: {},
   },
-  plugins: [require('@tailwindcss/forms')],
+  plugins: {
+    tailwindcss: [require('@tailwindcss/forms')],
+    autoprefixer: {},
+  }
 }

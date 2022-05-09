@@ -1,18 +1,16 @@
 {
   "short_name": "Rakshak",
   "name": "Rakshak: The chrome extension",
-  "description":"Saving you from the mean behind the screen",
+  "description": "Saving you from the mean behind the screen",
   "version": "1.0",
   "manifest_version": 3,
   "permissions": ["identity", "activeTab", "storage"],
-	"host_permissions": [
-		"*://*/*"
-	  ],
+  "host_permissions": ["*://*/*"],
   "action": {
-      "default_popup": "popup.html",
-      "default_title": "Open the popup"
+    "default_popup": "popup.html",
+    "default_title": "Open the popup"
   },
-  "icons":{
+  "icons": {
     "16": "favicon.ico",
     "48": "logo.png",
     "128": "logo.png"
