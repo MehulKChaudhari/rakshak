@@ -12,3 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function openIndex() {
   chrome.tabs.create({ active: true, url: "/pages/login.html" });
 }
+
+chrome.storage.lcoal.get("token", function (items) {
+  console.log("Settings retrieved", items);
+});

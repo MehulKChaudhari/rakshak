@@ -5,9 +5,10 @@ document.querySelector("form").addEventListener("submit", (event) => {
   const pass = document.querySelector("#password").value;
 
   chrome.runtime.sendMessage(
-    { message: "login", payload: { email, pass } },
+    { message: "login", payload: { email, password: pass } },
     function (response) {
-      if (response === "success") window.location.replace("./popup.html");
+      if (response === "success")
+        chrome.tabs.update({ url: "/pages/user.html" });
     }
   );
 });

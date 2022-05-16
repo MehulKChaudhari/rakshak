@@ -6,10 +6,10 @@ document.querySelector("form").addEventListener("submit", (event) => {
   const pass = document.querySelector("#password").value;
 
   chrome.runtime.sendMessage(
-    { message: "signup", payload: { name, email, pass } },
+    { message: "signup", payload: { name, email, password: pass } },
     function (response) {
       if (response === "success")
-        window.location.replace("/pages/user.html");
+        chrome.tabs.update({ url: "/pages/login.html" });
     }
   );
 });
