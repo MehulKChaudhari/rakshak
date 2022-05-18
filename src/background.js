@@ -10,7 +10,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.message === "login") {
     authenticateUser("login", request.payload)
       .then((res) => {
-        console.log("login valo",res);
+        console.log("login valo", res);
         sendResponse(res);
       })
       .catch((err) => console.log(err));
@@ -79,22 +79,33 @@ function authenticateUser(type, user_info) {
         "Content-type": "application/json",
       },
     })
-      .then((res) => {
-        return new Promise((resolve) => {
-          if (res.status !== 200) resolve("fail");
+      .then((response) =>
+        response
+          .json()
+          .then((data) => ({
+            data: data,
+            status: response.status,
+          }))
+          .then((res) => {
+            return new Promise((resolve) => {
+              if (res.status !== 200) resolve("fail");
 
-          chrome.storage.local.set(
-            { token: res.message.token, name: res.message.profile.name },
-            function (response) {
-              if (chrome.runtime.lastError) {
-                resolve("fail");
-              }
-              console.log("Value is set to " + response);
-              resolve("success");
-            }
-          );
-        });
-      })
+              chrome.storage.local.set(
+                {
+                  token: res.data.message.token,
+                  name: res.data.message.profile.name,
+                },
+                function (response) {
+                  if (chrome.runtime.lastError) {
+                    resolve("fail");
+                  }
+                  console.log("Value is set to " + response);
+                  resolve("success");
+                }
+              );
+            });
+          })
+      )
       .catch((err) => console.log(err));
   } else if (type === "logout") {
     return new Promise((resolve) => {

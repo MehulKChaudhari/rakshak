@@ -5,14 +5,18 @@ protectButton.addEventListener("click", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  var y = document.getElementById("login");
-  y.addEventListener("click", openIndex);
+  // var y = document.getElementById("login");
+  // y.addEventListener("click", openIndex);
+  chrome.storage.local.get("token", function (items) {
+    if (items.token) {
+      chrome.tabs.create({ url: "/pages/user.html" });
+      chrome.browserAction.setPopup({ popup: "user.html" });
+    }
+  });
 });
 
 function openIndex() {
   chrome.tabs.create({ active: true, url: "/pages/login.html" });
 }
 
-chrome.storage.lcoal.get("token", function (items) {
-  console.log("Settings retrieved", items);
-});
+// document.addEventListener("load", () => {});
