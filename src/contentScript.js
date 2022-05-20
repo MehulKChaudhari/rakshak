@@ -5,13 +5,30 @@ window.addEventListener("click", (event) => {
   console.log("cleickedede");
   const data = document.querySelectorAll("div.JdNBm");
 
+  const messages = [];
   data.forEach((element) => {
     console.log(element.innerText);
-
-    if ((element.textContent || element.innerText).indexOf("Sale") > -1) {
-      element.style.filter = "blur(5px)";
-      element.style.backgroundColor = "red";
-    }
+    messages.push(element.innerText);
   });
-});
 
+  fetch("http://localhost:8000/api/parse-string-social/", {
+    method: "POST",
+    body: messages,
+    headers: {
+      "Content-type": "application/json",
+    },
+  })
+    .then((response) =>
+      response
+        .json()
+        .then((data) => ({
+          data: data,
+          status: response.status,
+        }))
+        .then((res) => {
+          console.log("res", data);
+        })
+    )
+    .catch((err) => console.log(err));
+  console.log("messages", messages);
+});
