@@ -1,3 +1,5 @@
+// Main business logic
+
 window.addEventListener("click", (event) => {
   const targetNode = event.target;
   console.log("cleickedede");
@@ -12,3 +14,4 @@ window.addEventListener("click", (event) => {
     }
   });
 });
+
