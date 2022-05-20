@@ -4,6 +4,8 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ViewSet
 
+import json
+
 import pickle
 
 protection_level_dict = {
@@ -19,13 +21,18 @@ class APIViewSet(ViewSet):
 
     def parse_string_social(self, request: Request):
 
-        # text = request.data.get("text").split(".")
+        text = json.loads(request.data.get("text"))
 
-        text = [
-            [
-                "Still you have a place in my heart",
-            ],
-        ]
+        # text = [
+        #     [
+        #         "Still you have a place in my heart",
+        #         "Dumbass"
+        #     ],
+        #     [
+        #         "Still you have a place in my heart",
+        #         "You retard"
+        #     ],
+        # ]
 
         global protection_level_dict
         protection_level = protection_level_dict[request.user.protection_level]
