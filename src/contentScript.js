@@ -1,4 +1,10 @@
 // Main business logic
+let authToken;
+chrome.storage.local.get("token", function (items) {
+  if (items.token) {
+    authToken = items.token;
+  }
+});
 
 window.addEventListener("click", (event) => {
   const targetNode = event.target;
@@ -10,12 +16,14 @@ window.addEventListener("click", (event) => {
     console.log(element.innerText);
     messages.push(element.innerText);
   });
+  console.log("token", `Token ${authToken}`);
 
   fetch("http://localhost:8000/api/parse-string-social/", {
     method: "POST",
-    body: messages,
+    body: JSON.stringify(messages),
     headers: {
       "Content-type": "application/json",
+      Authorization: `Token ${authToken}`,
     },
   })
     .then((response) =>
@@ -26,7 +34,7 @@ window.addEventListener("click", (event) => {
           status: response.status,
         }))
         .then((res) => {
-          console.log("res", data);
+          console.log("res", data);+.
         })
     )
     .catch((err) => console.log(err));
