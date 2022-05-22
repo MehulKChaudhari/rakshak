@@ -74,38 +74,35 @@ class APIViewSet(ViewSet):
         }
 
 
-        for sentence in text:
+        vect = tox.transform([text])
+        pred_tox = tox_model.predict_proba(vect)[:,1]
 
+        if pred_tox > protection_level:
+            result["toxic"] = True
 
-            vect = tox.transform([sentence])
-            pred_tox = tox_model.predict_proba(vect)[:,1]
+        vect = sev.transform([text])
+        pred_sev = sev_model.predict_proba(vect)[:,1]
+        if pred_sev > protection_level + 0.14:
+            result["severe_toxic"] = True
 
-            if pred_tox > protection_level:
-                result["toxic"] = True
+        vect = obs.transform([text])
+        pred_obs = obs_model.predict_proba(vect)[:,1]
+        if pred_obs > protection_level:
+            result["obscene"] = True
 
-            vect = sev.transform([sentence])
-            pred_sev = sev_model.predict_proba(vect)[:,1]
-            if pred_sev > protection_level + 0.14:
-                result["severe_toxic"] = True
+        vect = thr.transform([text])
+        pred_thr = thr_model.predict_proba(vect)[:,1]
+        if pred_thr > protection_level:
+            result["threat"] = True
 
-            vect = obs.transform([sentence])
-            pred_obs = obs_model.predict_proba(vect)[:,1]
-            if pred_obs > protection_level:
-                result["obscene"] = True
+        vect = ins.transform([text])
+        pred_ins = ins_model.predict_proba(vect)[:,1]
+        if pred_ins > protection_level:
+            result["insult"] = True
 
-            vect = thr.transform([sentence])
-            pred_thr = thr_model.predict_proba(vect)[:,1]
-            if pred_thr > protection_level:
-                result["threat"] = True
-
-            vect = ins.transform([sentence])
-            pred_ins = ins_model.predict_proba(vect)[:,1]
-            if pred_ins > protection_level:
-                result["insult"] = True
-
-            vect = ide.transform([sentence])
-            pred_ide = ide_model.predict_proba(vect)[:,1]
-            if pred_ide > protection_level:
-                result["identity_hate"] = True
-        
+        vect = ide.transform([text])
+        pred_ide = ide_model.predict_proba(vect)[:,1]
+        if pred_ide > protection_level:
+            result["identity_hate"] = True
+    
         return Response(result, status=status.HTTP_200_OK)
