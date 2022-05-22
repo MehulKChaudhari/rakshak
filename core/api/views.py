@@ -21,11 +21,11 @@ class APIViewSet(ViewSet):
 
     def parse_string_social(self, request: Request):
 
-        text = json.loads(request.data.get("text"))
+        text = request.data
 
         global protection_level_dict
         protection_level = protection_level_dict[request.user.protection_level]
-        
+
         # pass to ML model
         with open(r"ML/Pickle/toxic_vect.pkl", "rb") as f:
             tox = pickle.load(f)
@@ -53,17 +53,17 @@ class APIViewSet(ViewSet):
             sev_model = pickle.load(f)
 
         with open(r"ML/Pickle/obscene_model.pkl", "rb") as f:
-            obs_model  = pickle.load(f)
+            obs_model = pickle.load(f)
 
         with open(r"ML/Pickle/insult_model.pkl", "rb") as f:
-            ins_model  = pickle.load(f)
+            ins_model = pickle.load(f)
 
         with open(r"ML/Pickle/threat_model.pkl", "rb") as f:
-            thr_model  = pickle.load(f)
+            thr_model = pickle.load(f)
 
         with open(r"ML/Pickle/identity_hate_model.pkl", "rb") as f:
-            ide_model  = pickle.load(f)
-        
+            ide_model = pickle.load(f)
+
         result = {
             "toxic": False,
             "severe_toxic": False,
@@ -104,5 +104,6 @@ class APIViewSet(ViewSet):
         pred_ide = ide_model.predict_proba(vect)[:,1]
         if pred_ide > protection_level:
             result["identity_hate"] = True
+    
     
         return Response(result, status=status.HTTP_200_OK)
