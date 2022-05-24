@@ -9,34 +9,43 @@ chrome.storage.local.get("token", function (items) {
 window.addEventListener("click", (event) => {
   const targetNode = event.target;
   console.log("cleickedede");
-  const data = document.querySelectorAll("div.JdNBm");
+  console.log("href", window.location);
+  let data;
+  if (window.location.host === "www.instagram.com") {
+    data = document.querySelectorAll("div.JdNBm");
+  } else if (window.location.host === "twitter.com") {
+    data = document.querySelectorAll('[data-testid="tweetText"]');
+  }
 
-  const messages = [];
   data.forEach((element) => {
     console.log(element.innerText);
-    messages.push(element.innerText);
+    fetch("http://localhost:8000/api/parse-string-social/", {
+      method: "POST",
+      body: JSON.stringify(element.innerText),
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Token ${authToken}`,
+      },
+    })
+      .then((response) =>
+        response
+          .json()
+          .then((data) => ({
+            data: data,
+            status: response.status,
+          }))
+          .then((res) => {
+            console.log(
+              "res",
+              res.data,
+              Object.values(res.data).indexOf(true) > -1
+            );
+            if (Object.values(res.data).indexOf(true) > -1) {
+              element.style.filter = "blur(8px)";
+              element.style.backgroundColor = "red";
+            }
+          })
+      )
+      .catch((err) => console.log(err));
   });
-  console.log("token", `Token ${authToken}`);
-
-  fetch("http://localhost:8000/api/parse-string-social/", {
-    method: "POST",
-    body: JSON.stringify(messages),
-    headers: {
-      "Content-type": "application/json",
-      Authorization: `Token ${authToken}`,
-    },
-  })
-    .then((response) =>
-      response
-        .json()
-        .then((data) => ({
-          data: data,
-          status: response.status,
-        }))
-        .then((res) => {
-          console.log("res", data);+.
-        })
-    )
-    .catch((err) => console.log(err));
-  console.log("messages", messages);
 });
