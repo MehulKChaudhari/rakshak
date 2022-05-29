@@ -8,14 +8,14 @@ protectButton.addEventListener("click", () => {
   });
 });
 
-var radios = document.getElementsByName('genderS');
-
-for (var i = 0, length = radios.length; i < length; i++) {
-  if (radios[i].checked) {
-    // do whatever you want with the checked radio
-    alert(radios[i].value);
-
-    // only one radio can be logically checked, don't check the rest
-    break;
-  }
+var rad = document.safetyForm.safetyMethod;
+var prev = null;
+for (var i = 0; i < rad.length; i++) {
+  rad[i].addEventListener("change", function () {
+    prev ? console.log(prev.value) : null;
+    if (this !== prev) {
+      prev = this;
+    }
+    console.log(rad.value);
+  });
 }

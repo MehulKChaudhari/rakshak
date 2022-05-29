@@ -15,6 +15,8 @@ window.addEventListener("click", (event) => {
     data = document.querySelectorAll("div.JdNBm");
   } else if (window.location.host === "twitter.com") {
     data = document.querySelectorAll('[data-testid="tweetText"]');
+  } else if (window.location.host === "www.youtube.com") {
+    data = document.querySelectorAll("#content-text");
   }
 
   data.forEach((element) => {
@@ -35,11 +37,6 @@ window.addEventListener("click", (event) => {
             status: response.status,
           }))
           .then((res) => {
-            console.log(
-              "res",
-              res.data,
-              Object.values(res.data).indexOf(true) > -1
-            );
             if (Object.values(res.data).indexOf(true) > -1) {
               element.style.filter = "blur(8px)";
               element.style.backgroundColor = "red";
