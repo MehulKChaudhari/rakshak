@@ -18,7 +18,7 @@ window.addEventListener("click", (event) => {
   console.log("href", window.location);
   let data;
   if (window.location.host === "www.instagram.com") {
-    data = document.querySelectorAll("div.JdNBm");
+    data = document.querySelectorAll("div._acqu > div._ac1n");
   } else if (window.location.host === "twitter.com") {
     data = document.querySelectorAll('[data-testid="tweetText"]');
   } else if (window.location.host === "www.youtube.com") {
@@ -26,6 +26,7 @@ window.addEventListener("click", (event) => {
   }
 
   data.forEach((element) => {
+    console.log(element.innerText);
     fetch("http://localhost:8000/api/parse-string-social/", {
       method: "POST",
       body: JSON.stringify(element.innerText),
@@ -47,12 +48,16 @@ window.addEventListener("click", (event) => {
               /** creating wrapper  */
               const text = document.createElement("p");
 
+              /** add rakshak test ID */
+              text.setAttribute("data-id", "Rakshak_comment");
+
               /**Logic to add blur effect to backgorund div */
 
               if (window.location.host === "www.instagram.com") {
                 const child = element.children;
+                console.log("child", child);
                 child[0].style.cssText =
-                  "filter:blur(8px);background-color :red; padding:10px";
+                  "filter:blur(8px);background-color :red; padding:20px";
                 element.appendChild(text);
               } else if (window.location.host === "twitter.com") {
                 const parent = element.parentNode;
@@ -66,8 +71,9 @@ window.addEventListener("click", (event) => {
               }
 
               /** adding css to to created wrapper  */
+
               text.style.cssText =
-                "display: block; position: absolute; color:black; width:inherit; z-index:10; border-radius: 5px; padding:2px";
+                "display: block; position: absolute; color:black; width:inherit; z-index:10; border-radius: 5px; padding:12px";
               text.style.color = "black";
               const serverData = Object.keys(res.data).find(
                 (key) => res.data[key] === true
