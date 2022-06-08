@@ -73,7 +73,7 @@ window.addEventListener("click", (event) => {
               /** adding css to to created wrapper  */
 
               text.style.cssText =
-                "display: block; position: absolute; color:black; width:inherit; z-index:10; border-radius: 5px; padding:12px";
+                "display: block; position: absolute; color:black; width:inherit; z-index:1; border-radius: 5px; padding:12px";
               text.style.color = "black";
               const serverData = Object.keys(res.data).find(
                 (key) => res.data[key] === true
