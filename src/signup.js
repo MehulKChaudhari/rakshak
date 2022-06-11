@@ -9,7 +9,7 @@ document.querySelector("form").addEventListener("submit", (event) => {
     { message: "signup", payload: { name, email, password: pass } },
     function (response) {
       if (response === "success")
-        chrome.tabs.update({ url: "/pages/login.html" });
+        chrome.action.setPopup({ popup: "/pages/login.html" });
     }
   );
 });

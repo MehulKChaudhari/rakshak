@@ -8,7 +8,7 @@ document.querySelector("form").addEventListener("submit", (event) => {
     { message: "login", payload: { email, password: pass } },
     function (response) {
       if (response === "success")
-        chrome.tabs.update({ url: "/pages/user.html" });
+        chrome.action.setPopup({ popup: "/pages/user.html" });
     }
   );
 });
