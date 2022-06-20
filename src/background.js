@@ -64,12 +64,20 @@ function authenticateUser(type, user_info) {
       body: JSON.stringify(user_info),
       headers: { "Content-type": "application/json" },
     })
-      .then((res) => {
-        return new Promise((resolve) => {
-          if (res.status !== 201) resolve("fail");
-          resolve("success");
-        });
-      })
+      .then((response) =>
+        response
+          .json()
+          .then((data) => ({
+            data: data,
+            status: response.status,
+          }))
+          .then((res) => {
+            return new Promise((resolve) => {
+              if (res.status !== 201) resolve(res.data.message);
+              resolve("success");
+            });
+          })
+      )
       .catch((err) => console.log(err));
   } else if (type === "login") {
     return fetch("http://localhost:8000/accounts/login/", {
@@ -88,7 +96,7 @@ function authenticateUser(type, user_info) {
           }))
           .then((res) => {
             return new Promise((resolve) => {
-              if (res.status !== 200) resolve("fail");
+              if (res.status !== 200) resolve(res.data.message);
 
               chrome.storage.local.set(
                 {
