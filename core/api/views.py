@@ -108,5 +108,9 @@ class APIViewSet(ViewSet):
             result["identity_hate"] = protection_level
 
         result = dict(sorted(result.items(), key=lambda x: x[1], reverse=True))
+
+        for i in result:
+            if result[i] != False:
+                result[i] = True
     
         return Response(result, status=status.HTTP_200_OK)
