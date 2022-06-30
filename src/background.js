@@ -41,6 +41,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       })
       .catch((err) => console.log(err));
     return true;
+  } else if (request.message === "updateProtectionLevel") {
+    console.log("updateProtectionLevel", request.payload);
   }
 });
 

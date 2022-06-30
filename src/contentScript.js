@@ -51,36 +51,56 @@ window.addEventListener("click", (event) => {
               /** add rakshak test ID */
               text.setAttribute("data-id", "Rakshak_comment");
 
+              /** Logic to find first true value in response */
+              const getTrueKey = (obj) =>
+                Object.keys(obj).find((i) => obj[i] === true);
+
+              const typeOfMessage = getTrueKey(res.data);
+
               /**Logic to add blur effect to backgorund div */
 
               if (window.location.host === "www.instagram.com") {
                 const child = element.children;
-                console.log("child", child);
                 child[0].style.cssText =
                   "filter:blur(8px);background-color :red; padding:20px";
-                element.appendChild(text);
+                if (child.length === 1) {
+                  element.appendChild(text);
+                }
+                /** adding css to to created wrapper  */
+
+                text.style.cssText =
+                  "display: block; position: absolute; color:black; width:inherit; z-index:1; border-radius: 5px; padding:8px";
+                text.style.color = "black";
               } else if (window.location.host === "twitter.com") {
                 const parent = element.parentNode;
-                parent.appendChild(text);
+
+                if (element.parentNode.children.length === 1) {
+                  parent.appendChild(text);
+                }
                 element.style.cssText =
                   "filter:blur(8px);background-color :red; padding:10px";
+                /** adding css to to created wrapper  */
+
+                text.style.cssText =
+                  "display: block; position: absolute; color:black; width:inherit; z-index:1; border-radius: 5px; padding:8px";
+                text.style.color = "black";
               } else {
                 element.style.cssText =
                   "filter:blur(8px);background-color :red; padding:10px";
-                element.appendChild(text);
+                const parent = element.parentNode;
+
+                // if (element.parentNode.children.length === 1) {
+                parent.insertBefore(text, element.nextSibling);
+                // }
+                /** adding css to to created wrapper  */
+
+                text.style.cssText =
+                  "display: block; position: absolute; color:black; width:inherit; z-index:1; border-radius: 5px; padding:2px; bottom:50px; font-size:12px;";
+                text.style.color = "black";
               }
 
-              /** adding css to to created wrapper  */
-
-              text.style.cssText =
-                "display: block; position: absolute; color:black; width:inherit; z-index:1; border-radius: 5px; padding:12px";
-              text.style.color = "black";
-              const serverData = Object.keys(res.data).find(
-                (key) => res.data[key] === true
-              );
-              console.log("server true", serverData);
               /**adding text to created wrapper */
-              text.innerText = "This content has hate language";
+              text.innerText = `This content has ${typeOfMessage} language`;
             }
           })
       )
